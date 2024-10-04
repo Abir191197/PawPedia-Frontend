@@ -1,10 +1,12 @@
 "use client";
 
-import { Dialog } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+
+
+
+import RecentPost from "@/app/(CommonPage)/(home)/@recentPosts/page";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+
 
 const navigation = [
   { name: "Home", to: "#home" },
@@ -12,34 +14,8 @@ const navigation = [
   { name: "Company", to: "#company" },
 ];
 
-
-const blogPosts = [
-  {
-    id: 1,
-    title: "Vel expedita assumenda placeat aut nisi optio voluptates quas",
-    href: "#",
-    description:
-      "Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80",
-    date: "Mar 16, 2020",
-    datetime: "2020-03-16",
-    author: {
-      name: "Michael Foster",
-      imageUrl:
-        "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-  },
-  // More posts...
-];
 const footerNavigation = {
-  main: [
-    { name: "Blog", href: "#" },
-    { name: "Jobs", href: "#" },
-    { name: "Press", href: "#" },
-    { name: "Accessibility", href: "#" },
-    { name: "Partners", href: "#" },
-  ],
+ 
   social: [
     {
       name: "Facebook",
@@ -106,18 +82,18 @@ const footerNavigation = {
 };
 
 export default function LandingPage() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
+ 
 
   return (
     <div className="bg-white">
       {/* Header */}
       <header className="absolute inset-x-0 top-0 z-50">
-        <nav id="home"
+        <nav
+          id="home"
           className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
           aria-label="Global">
           <div className="flex lg:flex-1">
-            <Link href="#" className="-m-1.5 p-1.5">
+            {/* <Link href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
               <Image
                 className="h-8 w-auto"
@@ -126,9 +102,9 @@ export default function LandingPage() {
                 width={32}
                 height={32}
               />
-            </Link>
+            </Link> */}
           </div>
-          <div className="flex lg:hidden">
+          {/* <div className="flex lg:hidden">
             <button
               type="button"
               className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
@@ -136,14 +112,18 @@ export default function LandingPage() {
               <span className="sr-only">Open main menu</span>
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
-          </div>
+          </div> */}
           <div className="hidden lg:flex lg:gap-x-12">
             {navigation.map((item) => (
               <a
                 key={item.name}
                 href={item.to}
                 onClick={(e) => {
-                  if (item.name === "Company" || item.name === "Blog" || item.name === "Home") {
+                  if (
+                    item.name === "Company" ||
+                    item.name === "Blog" ||
+                    item.name === "Home"
+                  ) {
                     e.preventDefault();
                     const element = document.getElementById(item.to.slice(1));
                     if (element) {
@@ -164,7 +144,7 @@ export default function LandingPage() {
             </Link>
           </div>
         </nav>
-        <Dialog
+        {/* <Dialog
           as="div"
           className="lg:hidden"
           open={mobileMenuOpen}
@@ -212,7 +192,7 @@ export default function LandingPage() {
               </div>
             </div>
           </Dialog.Panel>
-        </Dialog>
+        </Dialog> */}
       </header>
 
       <main className="isolate">
@@ -278,7 +258,7 @@ export default function LandingPage() {
                       <Image
                         src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80"
                         alt=""
-                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg" 
+                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
                         width={396}
                         height={528}
                         quality={100}
@@ -291,7 +271,7 @@ export default function LandingPage() {
                       <Image
                         src="https://images.unsplash.com/photo-1485217988980-11786ced9454?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80"
                         alt=""
-                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg" 
+                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
                         width={396}
                         height={528}
                         quality={100}
@@ -302,7 +282,7 @@ export default function LandingPage() {
                       <Image
                         src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-x=.4&w=396&h=528&q=80"
                         alt=""
-                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg" 
+                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
                         width={396}
                         height={528}
                         quality={100}
@@ -326,7 +306,7 @@ export default function LandingPage() {
                       <Image
                         src="https://images.unsplash.com/photo-1670272505284-8faba1c31f7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80"
                         alt=""
-                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg" 
+                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
                         width={396}
                         height={528}
                         quality={100}
@@ -350,54 +330,7 @@ export default function LandingPage() {
               Vel dolorem qui facilis soluta sint aspernatur totam cumque.
             </p>
           </div>
-          <div className="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-            {blogPosts.map((post) => (
-              <article
-                key={post.id}
-                className="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-gray-900 px-8 pb-8 pt-80 sm:pt-48 lg:pt-80">
-                <Image
-                  src={post.imageUrl}
-                  alt=""
-                  className="absolute inset-0 -z-10 h-full w-full object-cover"
-                  width={396}
-                  height={528}
-                  quality={100}
-                />
-                <div className="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40" />
-                <div className="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
-
-                <div className="flex flex-wrap items-center gap-y-1 overflow-hidden text-sm leading-6 text-gray-300">
-                  <time dateTime={post.datetime} className="mr-8">
-                    {post.date}
-                  </time>
-                  <div className="-ml-4 flex items-center gap-x-4">
-                    <svg
-                      viewBox="0 0 2 2"
-                      className="-ml-0.5 h-0.5 w-0.5 flex-none fill-white/50">
-                      <circle cx={1} cy={1} r={1} />
-                    </svg>
-                    <div className="flex gap-x-2.5">
-                      <Image
-                        src={post.author.imageUrl}
-                        alt=""
-                        className="h-6 w-6 flex-none rounded-full bg-white/10"
-                        width={24}
-                        height={24}
-                        quality={100}
-                      />
-                      {post.author.name}
-                    </div>
-                  </div>
-                </div>
-                <h3 className="mt-3 text-lg font-semibold leading-6 text-white">
-                  <a href={post.href}>
-                    <span className="absolute inset-0" />
-                    {post.title}
-                  </a>
-                </h3>
-              </article>
-            ))}
-          </div>
+          <RecentPost blogPosts={[]} />
         </div>
 
         {/* Logo cloud */}
@@ -432,53 +365,7 @@ export default function LandingPage() {
               />
             </svg>
           </div>
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <h2 className="text-center text-lg font-semibold leading-8 text-gray-900">
-              Trusted by the world&apos;s most innovative teams
-            </h2>
-            <div className="mx-auto mt-10 grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-5">
-              <Image
-                className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-                src="https://tailwindui.com/img/logos/158x48/transistor-logo-gray-900.svg"
-                alt="Transistor"
-                width={158}
-                height={48} 
-                quality={100}
-              />
-              <Image
-                className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-                src="https://tailwindui.com/img/logos/158x48/reform-logo-gray-900.svg"
-                alt="Reform"
-                width={158}
-                height={48}
-                quality={100}
-              />
-              <Image
-                className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-                src="https://tailwindui.com/img/logos/158x48/tuple-logo-gray-900.svg"
-                alt="Tuple"
-                width={158}
-                height={48}
-                quality={100}
-              />
-              <Image
-                className="col-span-2 max-h-12 w-full object-contain sm:col-start-2 lg:col-span-1"
-                src="https://tailwindui.com/img/logos/158x48/savvycal-logo-gray-900.svg"
-                alt="SavvyCal"
-                width={158}
-                height={48}
-                quality={100}
-              />
-              <Image
-                className="col-span-2 col-start-2 max-h-12 w-full object-contain sm:col-start-auto lg:col-span-1"
-                src="https://tailwindui.com/img/logos/158x48/statamic-logo-gray-900.svg"
-                alt="Statamic"
-                width={158}
-                height={48}
-                quality={100}
-              />
-            </div>
-          </div>
+          
         </div>
       </main>
 
@@ -486,19 +373,7 @@ export default function LandingPage() {
       <footer
         id="company"
         className="mx-auto mt-40 max-w-7xl overflow-hidden px-6 pb-20 sm:mt-64 sm:pb-24 lg:px-8">
-        <nav
-          className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12"
-          aria-label="Footer">
-          {footerNavigation.main.map((item) => (
-            <div key={item.name} className="pb-6">
-              <a
-                href={item.href}
-                className="text-sm leading-6 text-gray-600 hover:text-gray-900">
-                {item.name}
-              </a>
-            </div>
-          ))}
-        </nav>
+        
         <div className="mt-10 flex justify-center space-x-10">
           {footerNavigation.social.map((item) => (
             <a
