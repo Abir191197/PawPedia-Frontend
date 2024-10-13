@@ -1,6 +1,6 @@
 // app/register/page.tsx
 
-
+"use client"
 import React, { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { Eye, EyeOff, Lock, Mail, User, Phone, MapPin } from "lucide-react";
