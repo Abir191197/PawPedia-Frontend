@@ -1,3 +1,4 @@
+"use client"
 import MyContent from "@/components/UI/MyContent";
 
 

@@ -1,5 +1,4 @@
-// hooks/useAuth.ts
-"use client";
+
 import useSWR from "swr";
 import { FieldValues } from "react-hook-form";
 import Cookies from "js-cookie";
