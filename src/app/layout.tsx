@@ -1,4 +1,4 @@
-"use client"
+
 import localFont from "next/font/local";
 import "../styles/globals.css";
 

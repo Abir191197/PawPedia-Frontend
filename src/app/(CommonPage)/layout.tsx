@@ -1,4 +1,4 @@
-"use client"
+
 import UserDashboard from "@/components/UI/UserDashboard";
 
 

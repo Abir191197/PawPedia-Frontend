@@ -11,7 +11,7 @@ import {
   Lock,
   UserPlus,
   Trash2,
-  
+  XCircle,
 } from "lucide-react";
 import { useCreateComment } from "@/hooks/CreateComment";
 import { useUpvotePost } from "@/hooks/upvote";
