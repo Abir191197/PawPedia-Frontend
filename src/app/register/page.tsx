@@ -1,12 +1,13 @@
+// app/register/page.tsx
 "use client";
 
 import React, { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { Eye, EyeOff, Lock, Mail, User, Phone, MapPin } from "lucide-react";
 import Link from "next/link";
-import { registerUser } from "@/services/authService";
 import { toast } from "sonner"; // Import the toast function from Sonner
 import { useRouter } from "next/navigation"; // Import useRouter for navigation
+import { useRegister } from "@/hooks/useAuth";
 
 export default function Page() {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,15 +26,15 @@ export default function Page() {
         ...data,
         role: "user", // Set default role here
       };
-      const result = await registerUser(userData);
+      const result = await useRegister()(userData);
       console.log(result);
       if (result.success) {
         // Show success toast
-        toast.success("Registration successful! Redirecting to role page...");
+        toast.success("Registration successful! Redirecting to login...");
 
         // Redirect after a brief delay
         setTimeout(() => {
-          router.push("/login"); // Redirect to /role
+          router.push("/login"); // Redirect to /login
         }, 2000); // Adjust the delay as needed (2000 ms = 2 seconds)
       } else {
         setServerError(result.message || "Registration failed");

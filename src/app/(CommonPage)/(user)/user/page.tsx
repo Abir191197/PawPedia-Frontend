@@ -1,8 +1,11 @@
 
+import MainPostArea from "@/components/UI/MainPostArea"
+
+
 
 const page = () => {
   return (
-    <div>User Page</div>
+   <MainPostArea></MainPostArea>
   )
 }
 

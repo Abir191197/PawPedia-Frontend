@@ -1,7 +1,6 @@
+"use server";
 export const getRecentPosts = async () => {
   try {
-   
-
     const res = await fetch(
       "https://paw-pedia-backend.vercel.app/api/pet/posts",
       {

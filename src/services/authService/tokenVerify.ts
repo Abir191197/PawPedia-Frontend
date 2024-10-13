@@ -17,7 +17,10 @@ async function getUserFromCookies(request: NextRequest) {
       // Return the user object based on the payload
       return {
         name: payload.name as string, // Access name from the JWT payload
-        role: payload.role as string, // Access role from the JWT payload
+        role: payload.role as string,
+        _id: payload._id as string,
+        email: payload.email as string,
+        phone: payload.phone as string,
         // Add any other fields from the decoded token that you need
       };
     } catch (error) {

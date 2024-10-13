@@ -1,9 +1,12 @@
-import React from "react";
+import UserDashboard from "@/components/UI/UserDashboard";
+
+
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div>
-       <main>{children}</main>
+      <UserDashboard />
+      <main>{children}</main>
     </div>
   );
 }

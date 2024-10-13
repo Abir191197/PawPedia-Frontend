@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
-import getUserFromCookies from "./services/authService/tokenVerify"; // Adjust the path if necessary
-
-// Define the routes that don't require authentication
+import getUserFromCookies from "./services/authService/tokenVerify"; 
 const AuthRoutes = ["/login", "/register"];
 
 // Define role-based access control
@@ -16,7 +14,9 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Get user authentication data asynchronously
-  const user = await getUserFromCookies(request); // Ensure this function returns a promise
+  const user = await getUserFromCookies(request); // Ensure this function
+
+ 
 
   // If the user is not logged in
   if (!user) {

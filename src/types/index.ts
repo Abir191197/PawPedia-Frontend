@@ -40,3 +40,11 @@ export interface IPetPost {
   post: PetPost; // The pet post
   comments: Comment[]; // Array of comments associated with the post
 }
+
+export interface User {
+  _id: string;
+  name: string;
+  email: string;
+  image: string;
+  role: string;
+}

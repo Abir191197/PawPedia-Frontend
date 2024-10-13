@@ -1,12 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState} from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import Link from "next/link";
-import { loginUser } from "@/services/authService"; // Adjust import based on your structure
-import { toast } from "sonner"; // Make sure to import the toast function
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useLogin, useUser } from "@/hooks/useAuth";
+import Loading from "@/components/UI/Loading";
+
+
 
 type LoginFormInputs = {
   email: string;
@@ -18,27 +21,35 @@ export default function Page() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormInputs>();
+  } = useForm<LoginFormInputs>({
+    defaultValues: {
+      email: "user1@gmail.com",
+      password: "123456789",
+    },
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  const login = useLogin();
+  const {  isLoading } = useUser();
+  console.log(isLoading);
+ 
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
-    setIsSubmitting(true); // Disable submit button
+    setIsSubmitting(true);
     try {
-      const result = await loginUser(data);
+      const result = await login(data);
       console.log(result);
-      setIsSubmitting(false); // Re-enable button
+      setIsSubmitting(false);
       if (result.success) {
         toast.success("Login successful! Redirecting...");
-        setTimeout(() => {
-          router.push(result.data.role);
-        }, 2000);
+        router.push(`/${result.data.role}`);
+
       } else {
         toast.error(result.message || "Login failed");
       }
     } catch (error: unknown) {
-      setIsSubmitting(false); // Re-enable button
+      setIsSubmitting(false);
       if (error instanceof Error) {
         toast.error(error.message || "An error occurred");
       } else {
@@ -46,6 +57,8 @@ export default function Page() {
       }
     }
   };
+
+  if (isLoading) return <Loading />;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center p-4">
