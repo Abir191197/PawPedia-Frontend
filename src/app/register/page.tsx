@@ -1,5 +1,5 @@
 // app/register/page.tsx
-"use client";
+
 
 import React, { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
