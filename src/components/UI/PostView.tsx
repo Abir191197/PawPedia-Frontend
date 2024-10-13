@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import Image from "next/image";
 import DOMPurify from "dompurify";
@@ -15,7 +16,6 @@ import { useUpvotePost } from "@/hooks/upvote";
 import { useDownvotePost } from "@/hooks/downvote";
 import { usePayment } from "@/hooks/payment";
 import { useFollowPost } from "@/hooks/follow";
-
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);

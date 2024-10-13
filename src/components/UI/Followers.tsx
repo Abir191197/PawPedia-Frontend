@@ -1,3 +1,4 @@
+"use client";
 import { useFetchUser } from "@/hooks/getUser";
 import { EnvelopeIcon, PhoneIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
@@ -41,18 +42,18 @@ export default function FollowersAndFollowing() {
           {" "}
           <h1 className="text-4xl font-bold text-gray-900">User Profile</h1>
           <h1 className="text-2xl font-bold text-gray-900">
-          {name || "Unknown Name"}
+            {name || "Unknown Name"}
           </h1>
           <p className="text-md text-gray-600">
-         {role || "Role not available"}
+            {role || "Role not available"}
           </p>
           <p className="text-sm text-gray-500">
-      {address || "Address not provided"}
+            {address || "Address not provided"}
           </p>
           <div className="mt-3 space-y-2">
             <div className="flex items-center text-gray-600">
               <EnvelopeIcon className="h-5 w-5 mr-2 text-gray-400" />
-            <span>{email || "Email not available"}</span>
+              <span>{email || "Email not available"}</span>
             </div>
             <div className="flex items-center text-gray-600">
               <PhoneIcon className="h-5 w-5 mr-2 text-gray-400" />
