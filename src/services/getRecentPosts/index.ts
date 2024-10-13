@@ -8,7 +8,7 @@ export const getRecentPosts = async () => {
         headers: {
           "Content-Type": "application/json",
         },
-        cache: "no-store" as RequestCache,
+      
       }
     );
 
