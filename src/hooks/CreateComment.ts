@@ -1,3 +1,4 @@
+"use client";
 import Cookies from "js-cookie";
 import { mutate } from "swr";
 
@@ -25,9 +26,8 @@ export function useCreateComment() {
     }
 
     const data = await response.json();
-     mutate(`${API_URL}/pet/posts`);// Return created comment data
+    mutate(`${API_URL}/pet/posts`); // Return created comment data
     return data;
-    
   };
 
   return createComment;

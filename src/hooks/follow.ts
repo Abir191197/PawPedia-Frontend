@@ -1,3 +1,4 @@
+"use client";
 import Cookies from "js-cookie";
 import { mutate } from "swr";
 
@@ -33,7 +34,6 @@ export function useFollowPost() {
     // Optionally mutate the cache for posts or followers if needed
     mutate(`${API_URL}/pet/posts`); // Update posts data
     // Optionally, you might want to mutate the user's followers
-    
 
     return data;
   };

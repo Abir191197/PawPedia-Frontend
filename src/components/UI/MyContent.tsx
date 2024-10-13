@@ -1,6 +1,6 @@
 "use client"; // Ensures this code runs on the client side
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import DOMPurify from "dompurify";
 import Loading from "@/app/register/loading"; // Placeholder for loading state
@@ -51,14 +51,15 @@ const MyContent = () => {
   const createPayment = usePayment();
   const followPost = useFollowPost();
   const deletePost = useDeletePost();
-
-  const user = localStorage.getItem("user");
-  let userId = null;
-  if (user) {
-    const userData = JSON.parse(user);
-    userId = userData._id;
-    console.log("User ID:", userId);
-  }
+const [userId, setUserId] = useState(null);
+ useEffect(() => {
+   const user = localStorage.getItem("user");
+   if (user) {
+     const userData = JSON.parse(user);
+     setUserId(userData._id); // Set the user ID state
+     console.log("User ID:", userData._id); // Logging for debugging
+   }
+ }, []);
 
   // Use the custom hook to fetch posts
   const { posts, isLoading, isError } = useGetMyPost();

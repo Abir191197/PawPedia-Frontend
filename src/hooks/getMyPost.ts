@@ -1,3 +1,4 @@
+
 import Cookies from "js-cookie";
 import useSWR, { mutate } from "swr";
 
@@ -36,7 +37,7 @@ export function useGetMyPost() {
     `${API_URL}/pet/posts/MyContents`, // Ensure this endpoint is correct
     fetchPetPostsByUser
   );
- mutate(`${API_URL}/pet/posts`); 
+ mutate(`${API_URL}/pet/posts/MyContents`); 
   return {
     posts: data,
     isLoading: !error && !data, // Loading if there is no data and no error

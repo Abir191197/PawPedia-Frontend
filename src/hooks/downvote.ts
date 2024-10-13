@@ -1,3 +1,4 @@
+"use client";
 import Cookies from "js-cookie";
 import { mutate } from "swr";
 
@@ -28,8 +29,8 @@ export function useDownvotePost() {
       throw new Error(errorData.message || "Failed to downvote the post");
     }
 
-      const data = await response.json();
-     mutate(`${API_URL}/pet/posts`);  // Return updated post data
+    const data = await response.json();
+    mutate(`${API_URL}/pet/posts`); // Return updated post data
     return data;
   };
 

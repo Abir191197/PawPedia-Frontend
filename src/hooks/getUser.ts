@@ -1,3 +1,4 @@
+"use client";
 import Cookies from "js-cookie";
 import useSWR from "swr";
 
@@ -13,13 +14,13 @@ const fetchUser = async (url: string) => {
     throw new Error("Authorization token is missing");
   }
 
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json", // Set content-type to JSON
-        Authorization: `Bearer ${token}`, // Authorization header
-      },
-    });
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json", // Set content-type to JSON
+      Authorization: `Bearer ${token}`, // Authorization header
+    },
+  });
 
   // Check for a successful response
   if (!response.ok) {

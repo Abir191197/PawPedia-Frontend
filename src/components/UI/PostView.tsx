@@ -1,5 +1,6 @@
-"use client";
-import React, { useState } from "react";
+"use client"; // This ensures that this component only runs on the client
+
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import DOMPurify from "dompurify";
 import { useFetchPosts } from "@/hooks/getPost";
@@ -40,13 +41,17 @@ const PostView = () => {
   const createPayment = usePayment();
   const followPost = useFollowPost();
 
-  const user = localStorage.getItem("user");
-  let userId = null;
-  if (user) {
-    const userData = JSON.parse(user);
-    userId = userData._id;
-    console.log(userId);
-  }
+  const [userId, setUserId] = useState(null); // State to store userId
+
+  useEffect(() => {
+    // Only runs on the client
+    const user = localStorage.getItem("user");
+    if (user) {
+      const userData = JSON.parse(user);
+      setUserId(userData._id); // Set the userId state
+      console.log(userData._id);
+    }
+  }, []); // Empty dependency array ensures this runs only on mount
 
   if (isLoading) return <Loading />;
   if (isError) return <div>Error loading posts</div>;
