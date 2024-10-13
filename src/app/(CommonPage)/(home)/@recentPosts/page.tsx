@@ -1,3 +1,4 @@
+
 import React from "react";
 import Image from "next/image";
 import { getRecentPosts } from "@/services/getRecentPosts/index"; // Import only the function we'll use
