@@ -1,3 +1,4 @@
+"use client"
 import localFont from "next/font/local";
 import "../styles/globals.css";
 
@@ -13,13 +14,7 @@ const geistMono = localFont({
 });
 
 // Export metadata as a server component
-export const metadata = {
-  title: "PawPedia",
-  description: "PawPedia",
-  icons: {
-    icon: "../styles/favicon.ico",
-  },
-};
+
 
 // Note: No "use client" directive here
 export default function RootLayout({
