@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import useSWR from "swr";
 
 // Define your API URL
-const API_URL = "http://localhost:5000/api";
+const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 // Fetcher function for user data (with token)
 const fetchUser = async (url: string) => {

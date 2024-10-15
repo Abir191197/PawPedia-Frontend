@@ -1,6 +1,5 @@
 "use client"; // Client-side rendering
 
-
 import { Menu, Popover, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -9,8 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Fragment } from "react";
 
-import {  useLogout } from "@/hooks/useAuth";
-
+import { useLogout } from "@/hooks/useAuth";
 
 const user = {
   name: "Tom Cook",
@@ -20,22 +18,18 @@ const user = {
 };
 
 const navigation = [
-  { name: "Home", href: "/user", current: true },
-  { name: "My Content", href: "/user/MyContent", current: false },
-  { name: "Nutrition Calculate", href: "/user/Nutrition", current: false },
+  { name: "Home", href: "/admin", current: true },
+  { name: "All Content", href: "/admin/AllContent", current: false },
+  { name: "User Management", href: "/admin/UserManage", current: false },
 ];
 
-
-const userNavigation = [
- 
-  { name: "Sign out", href: "/logout" },
-];
+const userNavigation = [{ name: "Sign out", href: "/logout" }];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function UserDashboard() {
+export default function AdminDashboard() {
   const router = useRouter();
   const logout = useLogout();
 
@@ -174,7 +168,7 @@ export default function UserDashboard() {
                   <div className="col-span-2">
                     <nav className="flex space-x-4">
                       {navigation.map((item) => (
-                        <Link 
+                        <Link
                           key={item.name}
                           href={item.href}
                           className={classNames(
@@ -215,7 +209,6 @@ export default function UserDashboard() {
           </>
         )}
       </Popover>
-
     </div>
   );
 }

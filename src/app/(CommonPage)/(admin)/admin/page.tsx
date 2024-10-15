@@ -1,9 +1,11 @@
+
+import Dashboard from '@/components/UI/Admin/total';
 import React from 'react';
 
 const page = () => {
     return (
         <div>
-            <h1>Admin Page</h1>
+        <Dashboard></Dashboard>
         </div>
     );
 };

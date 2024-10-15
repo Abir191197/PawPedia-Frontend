@@ -2,9 +2,9 @@
 import useSWR from "swr";
 
 // Define your API URL
-const API_URL = "http://localhost:5000/api";
+const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-// Fetcher function for SWR (no token required)
+// Fetcher function for SWR
 const fetcher = (url: string) =>
   fetch(url).then((res) => {
     if (!res.ok) {

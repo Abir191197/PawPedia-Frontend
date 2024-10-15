@@ -3,10 +3,10 @@ import Cookies from "js-cookie";
 import { mutate } from "swr";
 
 // Define your API URL
-const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const API_URL = "http://localhost:5000/api";
 
 // Fetcher function for deleting a pet post
-const deletePetPost = async (postId: string) => {
+const deleteUserById = async (userId: string) => {
   const token = Cookies.get("accessToken");
 
   // Check if the token exists
@@ -14,7 +14,7 @@ const deletePetPost = async (postId: string) => {
     throw new Error("Authorization token is missing");
   }
 
-  const response = await fetch(`${API_URL}/pet/posts/${postId}`, {
+  const response = await fetch(`${API_URL}/users/allUsers/${userId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -31,16 +31,14 @@ const deletePetPost = async (postId: string) => {
 };
 
 // Hook to delete a post
-export function useDeletePost() {
-  const deletePost = async (postId: string) => {
+export function useDeleteUser() {
+  const deleteUser = async (userId: string) => {
     try {
       // Call the delete function
-      await deletePetPost(postId);
+      await deleteUserById(userId);
 
       // Optimistically mutate the SWR cache to update the UI
-      mutate(`${API_URL}/pet/posts/MyContents`);
-      mutate(`${API_URL}/pet/posts`);
-      // Adjust this to your specific data key if necessary
+      mutate(`${API_URL}/users/allUsers`);
 
       console.log("Post deleted successfully");
     } catch (error) {
@@ -48,5 +46,5 @@ export function useDeletePost() {
     }
   };
 
-  return deletePost;
+  return deleteUser;
 }

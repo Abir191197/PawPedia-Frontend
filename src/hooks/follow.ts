@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { mutate } from "swr";
 
 // Define your API URL
-const API_URL = "http://localhost:5000/api";
+const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 // Hook for following a post's author
 export function useFollowPost() {
@@ -32,7 +32,7 @@ export function useFollowPost() {
     const data = await response.json();
 
     // Optionally mutate the cache for posts or followers if needed
-    mutate(`${API_URL}/pet/posts`); // Update posts data
+    mutate(`${API_URL}/users/me`); // Update posts data
     // Optionally, you might want to mutate the user's followers
 
     return data;

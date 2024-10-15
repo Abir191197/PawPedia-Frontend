@@ -3,7 +3,7 @@ import useSWR from "swr";
 import { FieldValues } from "react-hook-form";
 import Cookies from "js-cookie";
 
-const API_URL = "http://localhost:5000/api";
+const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 // Fetcher function to handle API calls with authentication
 const fetcher = async (url: string) => {
@@ -28,7 +28,7 @@ const fetcher = async (url: string) => {
 
 // Hook to get user data
 export function useUser() {
-  const { data, error, mutate } = useSWR(`${API_URL}/user`, fetcher); // Ensure the endpoint is correct for fetching user data
+  const { data, error, mutate } = useSWR(`${API_URL}/users/me`, fetcher); // Ensure the endpoint is correct for fetching user data
 
   return {
     user: data,
