@@ -17,7 +17,7 @@ import { useDownvotePost } from "@/hooks/downvote";
 import { usePayment } from "@/hooks/payment";
 import { useFollowPost } from "@/hooks/follow";
 
-const MAX_CONTENT_LENGTH = 100; // Define maximum content length
+const MAX_CONTENT_LENGTH = 300;
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -32,13 +32,14 @@ const formatDate = (dateString) => {
 };
 
 const PostView = () => {
-  const [newComment, setNewComment] = useState("");
+  const [comments, setComments] = useState({}); // Store comments per post
+  const [newComments, setNewComments] = useState({}); // Store new comment text per post
   const [expandedPosts, setExpandedPosts] = useState({});
   const [expandedComments, setExpandedComments] = useState({});
   const [userId, setUserId] = useState(null);
   const [visiblePosts, setVisiblePosts] = useState(10);
   const [sortOption, setSortOption] = useState("mostUpvoted");
-  const { posts, isLoading, isError } = useFetchPosts();
+  const { posts, isLoading, isError, mutate } = useFetchPosts();
   const createComment = useCreateComment();
   const upvotePost = useUpvotePost();
   const downvotePost = useDownvotePost();
@@ -53,6 +54,17 @@ const PostView = () => {
       setUserId(userData._id);
     }
   }, []);
+
+  useEffect(() => {
+    // Initialize comments from posts data
+    if (posts?.success) {
+      const initialComments = {};
+      posts.data.forEach((post) => {
+        initialComments[post._id] = post.comments || [];
+      });
+      setComments(initialComments);
+    }
+  }, [posts]);
 
   const lastPostRef = useCallback(
     (node) => {
@@ -110,23 +122,53 @@ const PostView = () => {
 
   const handleCommentSubmit = async (e, postId) => {
     e.preventDefault();
-    if (newComment.trim()) {
+    const commentText = newComments[postId]?.trim();
+
+    if (commentText) {
       try {
         const commentData = {
           postId: postId,
-          content: newComment,
+          content: commentText,
         };
-        await createComment(commentData);
-        setNewComment("");
+        const response = await createComment(commentData);
+
+        // Update local comments state
+        setComments((prev) => ({
+          ...prev,
+          [postId]: [...(prev[postId] || []), response.data],
+        }));
+
+        // Clear the comment input for this post
+        setNewComments((prev) => ({
+          ...prev,
+          [postId]: "",
+        }));
+
+        // Automatically expand comments after posting
+        setExpandedComments((prev) => ({
+          ...prev,
+          [postId]: true,
+        }));
+
+        // Refresh posts data
+        mutate();
       } catch (error) {
         console.error("Failed to post comment:", error.message);
       }
     }
   };
 
+  const handleCommentChange = (postId, value) => {
+    setNewComments((prev) => ({
+      ...prev,
+      [postId]: value,
+    }));
+  };
+
   const handleUpvote = async (postId) => {
     try {
       await upvotePost(postId);
+      mutate(); // Refresh posts data
     } catch (error) {
       console.error("Failed to upvote the post:", error.message);
     }
@@ -135,13 +177,13 @@ const PostView = () => {
   const handleDownvote = async (postId) => {
     try {
       await downvotePost(postId);
+      mutate(); // Refresh posts data
     } catch (error) {
       console.error("Failed to downvote the post:", error.message);
     }
   };
 
   const handlePayToSee = async (postId) => {
-    console.log(postId);
     try {
       const paymentData = await createPayment(postId);
       if (paymentData.data.payment_url) {
@@ -157,6 +199,7 @@ const PostView = () => {
   const handleFollow = async (postId) => {
     try {
       await followPost(postId);
+      mutate(); // Refresh posts data
     } catch (error) {
       console.error("Failed to follow the author:", error.message);
     }
@@ -185,6 +228,7 @@ const PostView = () => {
           : true;
         const lastPost = blogPosts.length === index + 1;
         const truncatedContent = truncateContent(post.content, post._id);
+        const postComments = comments[post._id] || [];
 
         return (
           <div
@@ -269,7 +313,7 @@ const PostView = () => {
                   <span>
                     {post.upvote.length} likes • {post.downvote.length} dislikes
                   </span>
-                  <span>{post.comments?.length || 0} comments</span>
+                  <span>{postComments.length} comments</span>
                 </div>
 
                 <div className="px-4 py-2 border-t border-gray-200 flex justify-around">
@@ -301,8 +345,10 @@ const PostView = () => {
                     className="w-full flex items-center">
                     <input
                       type="text"
-                      value={newComment}
-                      onChange={(e) => setNewComment(e.target.value)}
+                      value={newComments[post._id] || ""}
+                      onChange={(e) =>
+                        handleCommentChange(post._id, e.target.value)
+                      }
                       className="border border-gray-300 rounded-md p-2 w-full mr-2"
                       placeholder="Add a comment..."
                     />
@@ -316,12 +362,26 @@ const PostView = () => {
 
                 {areCommentsExpanded && (
                   <div className="px-4 py-2">
-                    {post.comments.map((comment) => (
+                    {postComments.map((comment) => (
                       <div
                         key={comment._id}
                         className="border-b border-gray-200 py-2">
-                        <p className="font-semibold">{comment.authorName}</p>
-                        <p>{comment.content}</p>
+                        <div className="flex items-center space-x-2 mb-1">
+                          <Image
+                            src="/api/placeholder/24/24"
+                            alt="Commenter Avatar"
+                            width={24}
+                            height={24}
+                            className="rounded-full"
+                          />
+                          <p className="font-semibold text-sm text-gray-600">
+                            {comment.authorName}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {formatDate(comment.createdAt)}
+                          </p>
+                        </div>
+                        <p className="ml-8 text-gray-700">{comment.content}</p>
                       </div>
                     ))}
                   </div>
