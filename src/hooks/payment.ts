@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { mutate } from "swr";
 
 // Define your API URL
-const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const API_URL = "https://paw-pedia-backend.vercel.app/api"
 
 // Hook for handling payment
 export function usePayment() {

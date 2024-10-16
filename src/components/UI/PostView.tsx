@@ -46,12 +46,19 @@ const PostView = () => {
   const observer = useRef();
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      const userData = JSON.parse(user);
-      setUserId(userData._id);
-    }
+    // Delay fetching user information by 500 milliseconds (adjust as needed)
+    const timer = setTimeout(() => {
+      const user = localStorage.getItem("user");
+      if (user) {
+        const userData = JSON.parse(user);
+        setUserId(userData._id);
+      }
+    }, 2000); // 500 ms delay
+
+    // Cleanup function to clear the timeout when the component unmounts
+    return () => clearTimeout(timer);
   }, []);
+
 
   const lastPostRef = useCallback(
     (node) => {
