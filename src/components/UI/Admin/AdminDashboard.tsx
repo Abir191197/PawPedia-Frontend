@@ -1,7 +1,7 @@
 "use client"; // Client-side rendering
 
 import { Menu, Popover, Transition } from "@headlessui/react";
-import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
@@ -58,7 +58,7 @@ export default function AdminDashboard() {
                     <span className="sr-only">Your Company</span>
                     <Image
                       className="h-8 w-auto"
-                      src="/img/logos/mark.svg"
+                      src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20256%20256%22%3E%3Crect%20width%3D%22256%22%20height%3D%22256%22%20fill%3D%22none%22%2F%3E%3Ccircle%20cx%3D%22212%22%20cy%3D%22108%22%20r%3D%2220%22%20opacity%3D%22.2%22%2F%3E%3Ccircle%20cx%3D%2244%22%20cy%3D%22108%22%20r%3D%2220%22%20opacity%3D%22.2%22%2F%3E%3Ccircle%20cx%3D%2292%22%20cy%3D%2260%22%20r%3D%2220%22%20opacity%3D%22.2%22%2F%3E%3Ccircle%20cx%3D%22164%22%20cy%3D%2260%22%20r%3D%2220%22%20opacity%3D%22.2%22%2F%3E%3Cpath%20d%3D%22M183.23572%2C155.85352a43.541%2C43.541%2C0%2C0%2C1-20.667-25.90381l-.00092.001a35.9985%2C35.9985%2C0%2C0%2C0-69.13562%2C0l-.00092-.001a43.541%2C43.541%2C0%2C0%2C1-20.667%2C25.90381%2C32.00736%2C32.00736%2C0%2C0%2C0%2C27.72266%2C57.61767%2C72.51938%2C72.51938%2C0%2C0%2C1%2C55.02612%2C0%2C32.00679%2C32.00679%2C0%2C0%2C0%2C27.72266-57.61767Z%22%20opacity%3D%22.2%22%2F%3E%3Ccircle%20cx%3D%22212%22%20cy%3D%22108%22%20r%3D%2220%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%2216%22%2F%3E%3Ccircle%20cx%3D%2244%22%20cy%3D%22108%22%20r%3D%2220%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%2216%22%2F%3E%3Ccircle%20cx%3D%2292%22%20cy%3D%2260%22%20r%3D%2220%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%2216%22%2F%3E%3Ccircle%20cx%3D%22164%22%20cy%3D%2260%22%20r%3D%2220%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%2216%22%2F%3E%3Cpath%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%2216%22%20d%3D%22M183.23572%2C155.85352a43.541%2C43.541%2C0%2C0%2C1-20.667-25.90381l-.00092.001a35.9985%2C35.9985%2C0%2C0%2C0-69.13562%2C0l-.00092-.001a43.541%2C43.541%2C0%2C0%2C1-20.667%2C25.90381%2C32.00736%2C32.00736%2C0%2C0%2C0%2C27.72266%2C57.61767%2C72.51938%2C72.51938%2C0%2C0%2C1%2C55.02612%2C0%2C32.00679%2C32.00679%2C0%2C0%2C0%2C27.72266-57.61767Z%22%2F%3E%3C%2Fsvg%3E"
                       alt="Your Company"
                       width={32}
                       height={32}
@@ -126,7 +126,6 @@ export default function AdminDashboard() {
                   </Menu>
                 </div>
 
-
                 {/* Menu button */}
                 <div className="absolute right-0 flex-shrink-0 lg:hidden">
                   {/* Mobile menu button */}
@@ -158,9 +157,7 @@ export default function AdminDashboard() {
                       ))}
                     </nav>
                   </div>
-                  <div>
-                
-                  </div>
+                  <div></div>
                 </div>
               </div>
             </div>
