@@ -23,7 +23,7 @@
 
 ## Backend Repository
 
-- [Cox's SeaSide Bike Backend](https://github.com/Abir191197/PawPedia-Backend)
+- [PawPedia Backend](https://github.com/Abir191197/PawPedia-Backend)
 
 
 ## Project Objectives
