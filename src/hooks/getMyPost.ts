@@ -34,10 +34,10 @@ const fetchPetPostsByUser = async (url: string) => {
 // Hook to fetch pet posts by user ID
 export function useGetMyPost() {
   const { data, error } = useSWR(
-    `${API_URL}/pet/posts/MyContents`, // Ensure this endpoint is correct
+    `${API_URL}/api/pet/posts/MyContents`, // Ensure this endpoint is correct
     fetchPetPostsByUser
   );
- mutate(`${API_URL}/pet/posts/MyContents`); 
+ mutate(`${API_URL}/api/pet/posts/MyContents`); 
   return {
     posts: data,
     isLoading: !error && !data, // Loading if there is no data and no error

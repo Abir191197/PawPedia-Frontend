@@ -10,7 +10,7 @@ export function useCreateComment() {
   const createComment = async (commentData: any) => {
     const token = Cookies.get("accessToken");
 
-    const response = await fetch(`${API_URL}/pet/posts/comments`, {
+    const response = await fetch(`${API_URL}/api/pet/posts/comments`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json", // Set content-type to JSON
@@ -26,7 +26,7 @@ export function useCreateComment() {
     }
 
     const data = await response.json();
-    mutate(`${API_URL}/pet/posts`); // Return created comment data
+    mutate(`${API_URL}/api/pet/posts`); // Return created comment data
     return data;
   };
 

@@ -17,6 +17,8 @@ import { useDownvotePost } from "@/hooks/downvote";
 import { usePayment } from "@/hooks/payment";
 import { useFollowPost } from "@/hooks/follow";
 
+const MAX_CONTENT_LENGTH = 100; // Define maximum content length
+
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   return date.toLocaleString("en-US", {
@@ -33,32 +35,24 @@ const PostView = () => {
   const [newComment, setNewComment] = useState("");
   const [expandedPosts, setExpandedPosts] = useState({});
   const [expandedComments, setExpandedComments] = useState({});
-  const { posts, isLoading, isError, mutate } = useFetchPosts();
+  const [userId, setUserId] = useState(null);
+  const [visiblePosts, setVisiblePosts] = useState(10);
+  const [sortOption, setSortOption] = useState("mostUpvoted");
+  const { posts, isLoading, isError } = useFetchPosts();
   const createComment = useCreateComment();
   const upvotePost = useUpvotePost();
   const downvotePost = useDownvotePost();
   const createPayment = usePayment();
   const followPost = useFollowPost();
-
-  const [userId, setUserId] = useState(null);
-  const [visiblePosts, setVisiblePosts] = useState(10);
-  const [sortOption, setSortOption] = useState("mostUpvoted");
   const observer = useRef();
 
   useEffect(() => {
-    // Delay fetching user information by 500 milliseconds (adjust as needed)
-    const timer = setTimeout(() => {
-      const user = localStorage.getItem("user");
-      if (user) {
-        const userData = JSON.parse(user);
-        setUserId(userData._id);
-      }
-    }, 2000); // 500 ms delay
-
-    // Cleanup function to clear the timeout when the component unmounts
-    return () => clearTimeout(timer);
+    const user = localStorage.getItem("user");
+    if (user) {
+      const userData = JSON.parse(user);
+      setUserId(userData._id);
+    }
   }, []);
-
 
   const lastPostRef = useCallback(
     (node) => {
@@ -92,8 +86,13 @@ const PostView = () => {
     return sortedArray.slice(0, visiblePosts);
   };
 
-  const blogPosts = sortedPosts();
-  const MAX_LENGTH = 100;
+  const truncateContent = (content, postId) => {
+    if (!content) return "";
+    if (content.length <= MAX_CONTENT_LENGTH || expandedPosts[postId]) {
+      return content;
+    }
+    return `${content.slice(0, MAX_CONTENT_LENGTH)}...`;
+  };
 
   const toggleExpand = (postId) => {
     setExpandedPosts((prev) => ({
@@ -118,8 +117,7 @@ const PostView = () => {
           content: newComment,
         };
         await createComment(commentData);
-        setNewComment(""); // Clear the input after submission
-        mutate(); // Refetch posts to update the UI
+        setNewComment("");
       } catch (error) {
         console.error("Failed to post comment:", error.message);
       }
@@ -129,7 +127,6 @@ const PostView = () => {
   const handleUpvote = async (postId) => {
     try {
       await upvotePost(postId);
-      mutate(); // Refetch posts to update the UI
     } catch (error) {
       console.error("Failed to upvote the post:", error.message);
     }
@@ -138,17 +135,16 @@ const PostView = () => {
   const handleDownvote = async (postId) => {
     try {
       await downvotePost(postId);
-      mutate(); // Refetch posts to update the UI
     } catch (error) {
       console.error("Failed to downvote the post:", error.message);
     }
   };
 
   const handlePayToSee = async (postId) => {
-    console.log("handlePayToSee", postId);
+    console.log(postId);
     try {
       const paymentData = await createPayment(postId);
-      if (paymentData.success && paymentData.data.payment_url) {
+      if (paymentData.data.payment_url) {
         window.location.href = paymentData.data.payment_url;
       } else {
         console.error("No payment URL received in response.");
@@ -161,11 +157,12 @@ const PostView = () => {
   const handleFollow = async (postId) => {
     try {
       await followPost(postId);
-      mutate(); // Refetch posts to update the UI
     } catch (error) {
       console.error("Failed to follow the author:", error.message);
     }
   };
+
+  const blogPosts = sortedPosts();
 
   return (
     <div className="lg:max-w-full lg:mx-auto bg-white rounded-lg shadow-md overflow-hidden p-4">
@@ -184,10 +181,10 @@ const PostView = () => {
         const areCommentsExpanded = expandedComments[post._id];
         const isAuthor = post.authorId === userId;
         const canAccessPremium = post.isPremium
-          ? post.PaidByUserPostId.includes(userId)
+          ? post.PaidByUserPostId?.includes(userId)
           : true;
-
         const lastPost = blogPosts.length === index + 1;
+        const truncatedContent = truncateContent(post.content, post._id);
 
         return (
           <div
@@ -223,66 +220,38 @@ const PostView = () => {
             </div>
 
             {post.isPremium && !canAccessPremium ? (
-              <div className="relative">
-                <div className="blur-md">
+              <div className="relative p-4 border rounded-lg">
+                <div className="blur-sm">
                   <div className="px-4 py-2">
-                    <div
-                      className="post-content break-words whitespace-pre-wrap"
-                      dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(post.content),
-                      }}
-                    />
-                  </div>
-
-                  {post?.images?.length > 0 && post.images[0] && (
-                    <div className="relative w-full h-96 overflow-hidden">
-                      <Image
-                        src={post.images[0]}
-                        alt="Post image"
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  )}
-
-                  <div className="px-4 py-2 flex justify-between text-sm text-gray-500">
-                    <span>
-                      {post.upvote.length} likes • {post.downvote.length}{" "}
-                      dislikes
-                    </span>
-                    <span>{post.comments?.length || 0} comments</span>
+                    <p>This content is premium. Please pay to see it.</p>
                   </div>
                 </div>
-                <div className="absolute inset-0 bg-black opacity-30"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded-md flex items-center space-x-2 hover:bg-blue-600 transition duration-300"
-                    onClick={() => handlePayToSee(post._id)}>
+                    onClick={() => handlePayToSee(post._id)}
+                    className="bg-blue-500 text-white px-6 py-3 rounded-lg flex items-center space-x-2 hover:bg-blue-600 transition duration-300 z-10">
                     <Lock size={20} />
-                    <span>Pay to See</span>
+                    <span>Pay to Unlock Content</span>
                   </button>
                 </div>
               </div>
             ) : (
               <div>
                 <div className="px-4 py-2">
-                  <div
-                    className={`post-content break-words whitespace-pre-wrap ${
-                      !isExpanded && post.content.length > MAX_LENGTH
-                        ? "truncate"
-                        : ""
-                    }`}
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(post.content),
-                    }}
-                  />
-                  {post.content.length > MAX_LENGTH && (
-                    <button
-                      className="text-blue-500"
-                      onClick={() => toggleExpand(post._id)}>
-                      {isExpanded ? "Show less" : "Read more"}
-                    </button>
-                  )}
+                  <div className="post-content break-words whitespace-pre-wrap">
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(truncatedContent),
+                      }}
+                    />
+                    {post.content.length > MAX_CONTENT_LENGTH && (
+                      <button
+                        onClick={() => toggleExpand(post._id)}
+                        className="text-blue-500 hover:underline mt-2">
+                        {isExpanded ? "Show Less" : "Read More"}
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 {post?.images?.length > 0 && post.images[0] && (
@@ -305,57 +274,58 @@ const PostView = () => {
 
                 <div className="px-4 py-2 border-t border-gray-200 flex justify-around">
                   <button
-                    className="flex items-center space-x-2 text-gray-600"
+                    className="flex items-center space-x-2 text-gray-600 hover:text-blue-500"
                     onClick={() => handleUpvote(post._id)}>
                     <ThumbsUp size={20} />
                     <span>Upvote</span>
                   </button>
                   <button
-                    className="flex items-center space-x-2 text-gray-600"
+                    className="flex items-center space-x-2 text-gray-600 hover:text-red-500"
                     onClick={() => handleDownvote(post._id)}>
                     <ThumbsDown size={20} />
                     <span>Downvote</span>
                   </button>
-                </div>
-
-                <div className="px-4 py-2">
                   <button
-                    className="text-blue-500"
+                    className="flex items-center space-x-2 text-gray-600 hover:text-green-500"
                     onClick={() => toggleCommentExpand(post._id)}>
-                    {areCommentsExpanded ? "Hide comments" : "Show comments"}
+                    <MessageCircle size={20} />
+                    <span>
+                      {areCommentsExpanded ? "Hide Comments" : "Show Comments"}
+                    </span>
                   </button>
-
-                  {areCommentsExpanded && (
-                    <div>
-                      {post.comments?.map((comment) => (
-                        <div key={comment._id} className="mt-2">
-                          <p className="text-gray-700">{comment.content}</p>
-                          <p className="text-sm text-gray-500">
-                            {comment.authorName} •{" "}
-                            {formatDate(comment.createdAt)}
-                          </p>
-                        </div>
-                      ))}
-
-                      <form
-                        onSubmit={(e) => handleCommentSubmit(e, post._id)}
-                        className="mt-4 flex space-x-2">
-                        <input
-                          type="text"
-                          value={newComment}
-                          onChange={(e) => setNewComment(e.target.value)}
-                          placeholder="Add a comment"
-                          className="border border-gray-300 rounded-md p-2 w-full"
-                        />
-                        <button
-                          type="submit"
-                          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
-                          Post
-                        </button>
-                      </form>
-                    </div>
-                  )}
                 </div>
+
+                <div className="px-4 py-2 border-t border-gray-200">
+                  <form
+                    onSubmit={(e) => handleCommentSubmit(e, post._id)}
+                    className="w-full flex items-center">
+                    <input
+                      type="text"
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                      className="border border-gray-300 rounded-md p-2 w-full mr-2"
+                      placeholder="Add a comment..."
+                    />
+                    <button
+                      type="submit"
+                      className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                      Comment
+                    </button>
+                  </form>
+                </div>
+
+                {areCommentsExpanded && (
+                  <div className="px-4 py-2">
+                    {post.comments.map((comment) => (
+                      <div
+                        key={comment._id}
+                        className="border-b border-gray-200 py-2">
+                        <p className="font-semibold">{comment.authorName}</p>
+                        <p>{comment.content}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>

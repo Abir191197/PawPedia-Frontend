@@ -16,7 +16,7 @@ export function useUpdateUser() {
     }
 
     try {
-      const response = await fetch(`${API_URL}/users/me/update`, {
+      const response = await fetch(`${API_URL}/api/users/me/update`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -31,7 +31,7 @@ export function useUpdateUser() {
       }
 
       const data = await response.json();
-      mutate(`${API_URL}/users/me`);
+      mutate(`${API_URL}/api/users/me`);
       return data;
     } catch (error) {
       console.error("Error updating user:", error);

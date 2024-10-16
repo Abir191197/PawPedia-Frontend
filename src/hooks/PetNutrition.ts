@@ -10,7 +10,7 @@ export function useGeneratePetNutritionPDF() {
   const generatePetNutritionPDF = async (petType, age, weight) => {
     const token = Cookies.get("accessToken");
 
-    const response = await fetch(`${API_URL}/Nutrition/generate-pdf`, {
+    const response = await fetch(`${API_URL}/api/Nutrition/generate-pdf`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -31,7 +31,7 @@ export function useGeneratePetNutritionPDF() {
     const url = window.URL.createObjectURL(pdfBlob); // Create a URL for the blob
 
     // Trigger a re-fetch of the relevant data if needed
-    mutate(`${API_URL}/pet/nutrition-data`); // This can be adjusted based on your specific needs
+    mutate(`${API_URL}/api/pet/nutrition-data`); // This can be adjusted based on your specific needs
 
     return url; // Return the URL for downloading the PDF
   };

@@ -17,7 +17,10 @@ const fetcher = (url: string) =>
 
 // Hook to fetch posts
 export function useFetchPosts() {
-  const { data, error, isLoading } = useSWR(`${API_URL}/pet/posts`, fetcher);
+  const { data, error, isLoading } = useSWR(
+    `${API_URL}/api/pet/posts`,
+    fetcher
+  );
 
   return {
     posts: data,

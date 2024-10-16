@@ -28,7 +28,7 @@ const fetcher = async (url: string) => {
 
 // Hook to get user data
 export function useUser() {
-  const { data, error, mutate } = useSWR(`${API_URL}/users/me`, fetcher); // Ensure the endpoint is correct for fetching user data
+  const { data, error, mutate } = useSWR(`${API_URL}/api/users/me`, fetcher); // Ensure the endpoint is correct for fetching user data
 
   return {
     user: data,
@@ -43,7 +43,7 @@ export function useLogin() {
   const { mutate } = useUser();
 
   const login = async (userData: FieldValues) => {
-    const response = await fetch(`${API_URL}/auth/login`, {
+    const response = await fetch(`${API_URL}/api/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -76,7 +76,7 @@ export function useLogin() {
 // Hook for user registration
 export function useRegister() {
   const register = async (userData: FieldValues) => {
-    const response = await fetch(`${API_URL}/auth/signup`, {
+    const response = await fetch(`${API_URL}/api/auth/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

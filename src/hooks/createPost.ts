@@ -10,7 +10,7 @@ export function useCreatePost() {
   const createPost = async (formData: FormData) => {
     const token = Cookies.get("accessToken");
 
-    const response = await fetch(`${API_URL}/pet/posts`, {
+    const response = await fetch(`${API_URL}/api/pet/posts`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -28,7 +28,7 @@ export function useCreatePost() {
     const data = await response.json(); // Return created post data
 
     // Trigger a re-fetch of the posts
-    mutate(`${API_URL}/pet/posts`); // This will refresh the posts data
+    mutate(`${API_URL}/api/pet/posts`); // This will refresh the posts data
 
     return data;
   };

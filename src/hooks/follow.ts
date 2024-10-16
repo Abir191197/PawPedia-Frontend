@@ -15,13 +15,16 @@ export function useFollowPost() {
       throw new Error("Authorization token is missing");
     }
 
-    const response = await fetch(`${API_URL}/pet/posts/following/${postId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json", // Set content-type to JSON
-        Authorization: `Bearer ${token}`, // Authorization header
-      },
-    });
+    const response = await fetch(
+      `${API_URL}/api/pet/posts/following/${postId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Set content-type to JSON
+          Authorization: `Bearer ${token}`, // Authorization header
+        },
+      }
+    );
 
     // Check for a successful response
     if (!response.ok) {
@@ -32,7 +35,7 @@ export function useFollowPost() {
     const data = await response.json();
 
     // Optionally mutate the cache for posts or followers if needed
-    mutate(`${API_URL}/users/me`); // Update posts data
+    mutate(`${API_URL}/api/users/me`); // Update posts data
     // Optionally, you might want to mutate the user's followers
 
     return data;

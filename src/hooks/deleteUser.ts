@@ -14,7 +14,7 @@ const deleteUserById = async (userId: string) => {
     throw new Error("Authorization token is missing");
   }
 
-  const response = await fetch(`${API_URL}/users/allUsers/${userId}`, {
+  const response = await fetch(`${API_URL}/api/users/allUsers/${userId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -38,7 +38,7 @@ export function useDeleteUser() {
       await deleteUserById(userId);
 
       // Optimistically mutate the SWR cache to update the UI
-      mutate(`${API_URL}/users/allUsers`);
+      mutate(`${API_URL}/api/users/allUsers`);
 
       console.log("Post deleted successfully");
     } catch (error) {

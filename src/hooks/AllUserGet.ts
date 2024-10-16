@@ -33,7 +33,10 @@ const fetchAllUsers = async (url) => {
 };
 
 export function useGetAllUsers() {
-  const { data, error } = useSWR(`${API_URL}/users/allUsers`, fetchAllUsers);
+  const { data, error } = useSWR(
+    `${API_URL}/api/users/allUsers`,
+    fetchAllUsers
+  );
 
   return {
     users: data || [],

@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { mutate } from "swr";
 
 // Define your API URL
-const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const API_URL = "http://localhost:5000";
 
 // Hook for handling payment
 export function usePayment() {
@@ -17,7 +17,7 @@ export function usePayment() {
 
     // Send payment request
     const paymentResponse = await fetch(
-      `${API_URL}/pet/posts/payment/${postId}`,
+      `${API_URL}/api/pet/posts/payment/${postId}`,
       {
         method: "POST",
         headers: {

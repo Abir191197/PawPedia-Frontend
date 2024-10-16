@@ -15,7 +15,7 @@ export function useUpvotePost() {
       throw new Error("Authorization token is missing");
     }
 
-    const response = await fetch(`${API_URL}/pet/posts/upvote/${postId}`, {
+    const response = await fetch(`${API_URL}/api/pet/posts/upvote/${postId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json", // Set content-type to JSON
@@ -30,7 +30,7 @@ export function useUpvotePost() {
     }
 
     const data = await response.json();
-    mutate(`${API_URL}/pet/posts`); // Return updated post data
+    mutate(`${API_URL}/api/pet/posts`); // Return updated post data
     return data;
   };
 

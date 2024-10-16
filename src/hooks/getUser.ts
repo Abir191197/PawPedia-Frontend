@@ -33,7 +33,10 @@ const fetchUser = async (url: string) => {
 
 // Hook to fetch user info
 export function useFetchUser() {
-  const { data, error, isLoading } = useSWR(`${API_URL}/users/me`, fetchUser);
+  const { data, error, isLoading } = useSWR(
+    `${API_URL}/api/users/me`,
+    fetchUser
+  );
 
   return {
     user: data,

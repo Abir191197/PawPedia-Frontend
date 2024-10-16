@@ -14,7 +14,7 @@ const deletePetPost = async (postId: string) => {
     throw new Error("Authorization token is missing");
   }
 
-  const response = await fetch(`${API_URL}/pet/posts/${postId}`, {
+  const response = await fetch(`${API_URL}/api/pet/posts/${postId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -38,8 +38,8 @@ export function useDeletePost() {
       await deletePetPost(postId);
 
       // Optimistically mutate the SWR cache to update the UI
-      mutate(`${API_URL}/pet/posts/MyContents`);
-      mutate(`${API_URL}/pet/posts`);
+      mutate(`${API_URL}/api/pet/posts/MyContents`);
+      mutate(`${API_URL}/api/pet/posts`);
       // Adjust this to your specific data key if necessary
 
       console.log("Post deleted successfully");
