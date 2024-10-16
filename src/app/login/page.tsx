@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useLogin, useUser } from "@/hooks/useAuth";
 import Loading from "@/components/UI/Loading";
+import InfoBanner from "@/components/UI/infoBanner";
 
 
 
@@ -21,12 +22,7 @@ export default function Page() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormInputs>({
-    defaultValues: {
-      email: "user1@gmail.com",
-      password: "123456789",
-    },
-  });
+  } = useForm<LoginFormInputs>();
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
@@ -62,6 +58,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center p-4">
+      <InfoBanner></InfoBanner>
       <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-gray-800">Welcome Back</h2>

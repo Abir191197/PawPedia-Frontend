@@ -98,10 +98,10 @@ const sortedPosts = () => {
     );
   }
 
-  if (sortOption === "mostUpvoted") {
-    sortedArray.sort((a, b) => b.upvote.length - a.upvote.length);
-  } else if (sortOption === "mostRecent") {
+   if (sortOption === "mostRecent") {
     sortedArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  } else if (sortOption === "mostUpvoted") {
+    sortedArray.sort((a, b) => b.upvote.length - a.upvote.length);
   }
 
   return sortedArray.slice(0, visiblePosts);

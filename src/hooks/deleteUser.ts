@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { mutate } from "swr";
 
 // Define your API URL
-const API_URL = "http://localhost:5000/api";
+const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 // Fetcher function for deleting a pet post
 const deleteUserById = async (userId: string) => {
