@@ -1,4 +1,3 @@
-"use client";
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import DOMPurify from "dompurify";
@@ -46,6 +45,7 @@ const PostView = () => {
   const createPayment = usePayment();
   const followPost = useFollowPost();
   const observer = useRef();
+  const [searchQuery, setSearchQuery] = useState(""); // Line 22
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -85,18 +85,28 @@ const PostView = () => {
   if (isLoading) return <Loading />;
   if (isError) return <div>Error loading posts</div>;
 
-  const sortedPosts = () => {
-    if (!posts?.success) return [];
-    let sortedArray = [...posts.data];
+const sortedPosts = () => {
+  if (!posts?.success) return [];
+  let sortedArray = [...posts.data];
 
-    if (sortOption === "mostUpvoted") {
-      sortedArray.sort((a, b) => b.upvote.length - a.upvote.length);
-    } else if (sortOption === "mostRecent") {
-      sortedArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    }
+  // Filter posts based on search query (Line 170)
+  if (searchQuery) {
+    sortedArray = sortedArray.filter(
+      (post) =>
+        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.content.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
 
-    return sortedArray.slice(0, visiblePosts);
-  };
+  if (sortOption === "mostUpvoted") {
+    sortedArray.sort((a, b) => b.upvote.length - a.upvote.length);
+  } else if (sortOption === "mostRecent") {
+    sortedArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  }
+
+  return sortedArray.slice(0, visiblePosts);
+};
+
 
   const truncateContent = (content, postId) => {
     if (!content) return "";
@@ -209,13 +219,21 @@ const PostView = () => {
 
   return (
     <div className="lg:max-w-full lg:mx-auto bg-white rounded-lg shadow-md overflow-hidden p-4">
-      <div className="flex justify-end mb-4">
+      <div className="mb-4 flex justify-end">
+        <input
+          type="text"
+          placeholder="Search posts"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)} // Line 249
+          className="border border-gray-300 rounded-md p-2 mr-4"
+        />
         <select
           value={sortOption}
           onChange={(e) => setSortOption(e.target.value)}
-          className="border border-gray-300 rounded-md p-2">
-          <option value="mostUpvoted">Most Upvoted</option>
+          className="border border-gray-300 rounded-md ">
           <option value="mostRecent">Most Recent</option>
+          <option value="mostUpvoted">Most Upvoted</option>
+         
         </select>
       </div>
 
@@ -238,7 +256,7 @@ const PostView = () => {
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center space-x-4">
                 <Image
-                  src="/api/placeholder/40/40"
+                  src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20enable-background%3D%22new%200%200%2032%2032%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20d%3D%22M22.14001%206.64001C22.14001%203.25%2019.38.5%2016%20.5S9.85999%203.25%209.85999%206.64001c0%203.37994%202.76001%206.12994%206.14001%206.12994S22.14001%2010.01996%2022.14001%206.64001zM4.04999%2026.45001V30c0%20.82996.66998%201.5%201.5%201.5h20.90002c.83002%200%201.5-.67004%201.5-1.5v-3.54999C27.95001%2019.85999%2022.59003%2014.5%2016%2014.5S4.04999%2019.85999%204.04999%2026.45001z%22%2F%3E%3C%2Fsvg%3E"
                   alt="User Avatar"
                   className="w-10 h-10 rounded-full"
                   width={40}
@@ -368,11 +386,12 @@ const PostView = () => {
                         className="border-b border-gray-200 py-2">
                         <div className="flex items-center space-x-2 mb-1">
                           <Image
-                            src="/api/placeholder/24/24"
+                            src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20enable-background%3D%22new%200%200%2032%2032%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20d%3D%22M22.14001%206.64001C22.14001%203.25%2019.38.5%2016%20.5S9.85999%203.25%209.85999%206.64001c0%203.37994%202.76001%206.12994%206.14001%206.12994S22.14001%2010.01996%2022.14001%206.64001zM4.04999%2026.45001V30c0%20.82996.66998%201.5%201.5%201.5h20.90002c.83002%200%201.5-.67004%201.5-1.5v-3.54999C27.95001%2019.85999%2022.59003%2014.5%2016%2014.5S4.04999%2019.85999%204.04999%2026.45001z%22%2F%3E%3C%2Fsvg%3E"
                             alt="Commenter Avatar"
                             width={24}
                             height={24}
-                            className="rounded-full"
+                            quality={100}
+                            className="rounded-full  bg-white"
                           />
                           <p className="font-semibold text-sm text-gray-600">
                             {comment.authorName}
